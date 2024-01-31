@@ -18,11 +18,18 @@ while True:
         
         average_heartbeat = heartbeat * 6
         if average_heartbeat > 205:
-          if trigger = True
-            print("Baby's hearrate is too high")
+            print("Baby's heart rate is too high")
             print(average_heartbeat)
+        elif average_heartbeat < 100:
+            print("Baby's heart rate is too low")
+            print(average_heartbeat)
+        else 
+            print("Heartrate is normal.")
+        if trigger = True
+            # put code for playing sound with speaker input
+            # put code for lighting up less (ideally blinking)
+            
         heartbeat = 0
         current_time = start_time
     print("Average Heartbeat per minute:", average_beat)
-    time.sleep(60)
-    if trigger = True
+    time.sleep(5)
