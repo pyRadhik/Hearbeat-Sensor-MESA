@@ -25,6 +25,7 @@ while True:
             print(average_heartbeat)
         else 
             print("Heartrate is normal.")
+            print(average_heartbeat)
         if trigger = True
             # put code for playing sound with speaker input
             # put code for lighting up less (ideally blinking)
