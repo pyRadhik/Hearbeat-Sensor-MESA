@@ -1,36 +1,35 @@
-# hearbeat sensor 1
 from adafruit_circuitplayground.express import cpx
-import board
 import time
-movement_threshold = 5
+
+movement_threshold = 0.01
 sample_interval = 0.1
 trigger = False
 heartbeat = 0
 start_time = time.monotonic()
+current_time = start_time
 
 while True:
-    x_float, y_float, z_float = cpx.acceleration 
-    total_acceleration = abs(x_float) + abs(y_float) + abs(z_float)
+    x, y, z = cpx.acceleration 
+    total_acceleration = abs(x) + abs(y) + abs(z)
     if total_acceleration > movement_threshold:
         heartbeat += 1
-    current_time = time.monotonic()
-    if current_time - start_time >= 10:
         
+    if time.monotonic() - start_time >= 10:
         average_heartbeat = heartbeat * 6
+        heartbeat = 0
+        start_time = time.monotonic()
         if average_heartbeat > 205:
             print("Baby's heart rate is too high")
-            print(average_heartbeat)
+            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
+            cpx.pixels.fill((127, 0, 0))
         elif average_heartbeat < 100:
             print("Baby's heart rate is too low")
-            print(average_heartbeat)
-        else 
+            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
+            cpx.pixels.fill((150, 127, 0))
+        else:
             print("Heartrate is normal.")
-            print(average_heartbeat)
-        if trigger = True
-            # put code for playing sound with speaker input
-            # put code for lighting up less (ideally blinking)
-            
-        heartbeat = 0
-        current_time = start_time
-    print("Average Heartbeat per minute:", average_beat)
+            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
+            cpx.pixels.fill((0, 255, 0))
     time.sleep(5)
+
+
