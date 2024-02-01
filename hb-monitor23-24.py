@@ -1,3 +1,4 @@
+# hearbeat sensor 1
 from adafruit_circuitplayground.express import cpx
 import time
 
@@ -9,8 +10,8 @@ start_time = time.monotonic()
 current_time = start_time
 
 while True:
-    x, y, z = cpx.acceleration 
-    total_acceleration = abs(x) + abs(y) + abs(z)
+    x_float, y_float, z_float = cpx.acceleration 
+    total_acceleration = int(x_float) + int(y_float) + int(z_float)
     if total_acceleration > movement_threshold:
         heartbeat += 1
         
