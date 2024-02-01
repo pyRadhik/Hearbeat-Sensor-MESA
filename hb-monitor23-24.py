@@ -1,36 +1,47 @@
-# hearbeat sensor 1
-from adafruit_circuitplayground.express import cpx
+# Heartbeat Sensor #1
 import time
+from adafruit_circuitplayground.express import cpx
 
-movement_threshold = 0.01
-sample_interval = 0.1
-trigger = False
-heartbeat = 0
+
+SAMPLING_INTERVAL = 0.02 
+HEARTBEAT_THRESHOLD_HIGH = 205
+HEARTBEAT_THRESHOLD_LOW = 100
+
+
+heartbeat_count = 0
 start_time = time.monotonic()
-current_time = start_time
 
 while True:
-    x_float, y_float, z_float = cpx.acceleration 
-    total_acceleration = int(x_float) + int(y_float) + int(z_float)
-    if total_acceleration > movement_threshold:
-        heartbeat += 1
-        
+    
+    z_acceleration = cpx.acceleration[2]
+
+   
+    if z_acceleration > 10.5:
+        heartbeat_count += 1
+
+    
     if time.monotonic() - start_time >= 10:
-        average_heartbeat = heartbeat * 6
-        heartbeat = 0
-        start_time = time.monotonic()
-        if average_heartbeat > 205:
-            print("Baby's heart rate is too high")
-            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
-            cpx.pixels.fill((127, 0, 0))
-        elif average_heartbeat < 100:
-            print("Baby's heart rate is too low")
-            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
-            cpx.pixels.fill((150, 127, 0))
+        
+        average_bpm = (heartbeat_count / 10) * 60
+
+        
+        print("Average BPM:", average_bpm)
+
+        
+        if average_bpm > HEARTBEAT_THRESHOLD_HIGH:
+            print("Average Heartbeat too high")
+            cpx.pixels.fill((255, 0, 0))  # Red
+        elif average_bpm < HEARTBEAT_THRESHOLD_LOW:
+            print("Average Heartbeat too low")
+            cpx.pixels.fill((255, 255, 0))  # Yellow
         else:
-            print("Heartrate is normal.")
-            print("Average Heartbeat per minute:", average_heartbeat, "bpm")
-            cpx.pixels.fill((0, 255, 0))
-    time.sleep(5)
+            cpx.pixels.fill((0, 255, 0))  # Green
+
+        
+        heartbeat_count = 0
+        start_time = time.monotonic()
+
+    time.sleep(0.1)
+
 
 
