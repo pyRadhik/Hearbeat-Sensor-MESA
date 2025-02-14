@@ -39,10 +39,10 @@ class RadialFilter(SimpleFilter):
         if math.fabs(distance) > self.iRadius and math.fabs(distance) <= self.oRadius:
             value = self.prevVal + (1 - self.descentSpeed) * self.oRadius * time * (math.atan(distance * self.smoothness) * 2.0/math.pi)
         if math.fabs(distance) > self.oRadius:
-            if distance < 0:
-                value = -self.oRadius
+            if distance > 0:
+                value -= self.oRadius
             else:
-                value = self.oRadius
+                value += self.oRadius
         return super().filter(value, time)
 
 
